@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Carousel</title>
+  <style>
+
+    h1{
+      text-align: center;
+      text-decoration: underline;
+      text-transform: capitalize;
+    }
+    .carousel-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+ 
+
+  </style>
+</head>
+<body>
+  <h1>my favorite Places</h1>
+ 
+  <div class="carousel-container">
+    <img class="myslides" src="a.jpeg" height="300" width="300">
+    <img class="myslides" src="b.jpeg" height="300" width="300">
+    <img class="myslides" src="c.jpeg" height="300" width="300">
+  </div>
+
+  <script>
+
+var index = 0;
+function carousel() {
+  var i;
+  var x = document.getElementsByClassName("myslides");
+
+  for (i = 0; i < x.length; i++) {``
+    x[i].style.display = "none";
+  }
+ index++;
+  if (index > x.length) {
+    index = 1;
+  }
+    x[index - 1].style.display = "block";
+    setTimeout(carousel, 2000);
+}
+carousel();
+    
+  </script>
+</body>
+</html>
