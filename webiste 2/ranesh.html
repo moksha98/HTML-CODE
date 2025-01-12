@@ -1,16 +1,20 @@
 <html>
-  <head>
-
-  </head>
   <body>
-    <button onclick="add()">
-      Click me to get the answer
-    </button>
-    
-    <h1 id="result"></h1>
+  <form name="myform" onsubmit="validate()">
+      First name :- <br>
+      <input type="text" name="fname"><br>
+      <input type = "submit" value="submit"> <br>
+      <p id=" message"></p>
+    </form>
+   <script>
+      function validate(){
+        var a = document.forms["myform"]["fname"].value
+        if (a==""){
+          alert("Please enter a name first")
 
-    <script src="script.js">
-
+        }
+      }
     </script>
+
   </body>
 </html>

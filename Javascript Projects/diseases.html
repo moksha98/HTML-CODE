@@ -1,0 +1,241 @@
+<html >
+<head>
+   
+    <title>Diseases Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0078D7;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        header .search-container {
+            display: flex;
+            align-items: center;
+        }
+
+        header input[type="text"] {
+            padding: 5px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        header button {
+            margin-left: 10px;
+            padding: 6px 10px;
+            background-color: #0053a5;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        header button:hover {
+            background-color: #003e7a;
+        }
+
+        .container {
+            display: flex;
+            padding: 20px;
+        }
+
+        .filter-container {
+            width: 20%;
+            padding: 10px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-container h3 {
+            margin-top: 0;
+        }
+
+        .filter-container input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .diseases-list {
+            width: 75%;
+            background-color: #ffffff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .diseases-list h2 {
+            margin-top: 0;
+        }
+
+        .diseases-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .diseases-item:last-child {
+            border-bottom: none;
+        }
+
+        .diseases-item button {
+            padding: 5px 10px;
+            background-color: #0078D7;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .diseases-item button:hover {
+            background-color: #0053a5;
+        }
+
+        .symptoms {
+            margin-top: 10px;
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Diseases Info</h1>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchBar" placeholder="Search diseases or symptoms...">
+            <button onclick="searchDisease()">Search</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="filter-container">
+            <h3>Filter by Category</h3>
+            <label><input type="checkbox" value="viral" onclick="filterDiseases()"> Viral</label><br>
+            <label><input type="checkbox" value="bacterial" onclick="filterDiseases()"> Bacterial</label><br>
+            <label><input type="checkbox" value="genetic" onclick="filterDiseases()"> Genetic</label><br>
+        </div>
+
+        <div class="diseases-list" id="diseaseList">
+            <h2>List of Diseases</h2>
+            <div class="diseases-item" data-category="viral" data-symptoms="Coughing, Sneezing, Fever">
+                Influenza
+                <button onclick="showSymptoms(this)">Show Symptoms</button>
+            </div>
+            <div class="diseases-item" data-category="bacterial" data-symptoms="Weight loss, Night sweats, Persistent cough">
+                Tuberculosis
+                <button onclick="showSymptoms(this)">Show Symptoms</button>
+            </div>
+            <div class="diseases-item" data-category="genetic" data-symptoms="Breathing difficulty, Persistent lung infections">
+                Cystic Fibrosis
+                <button onclick="showSymptoms(this)">Show Symptoms</button>
+            </div>
+            <div class="diseases-item" data-category="viral" data-symptoms="Fever, Dry cough, Fatigue">
+                COVID-19
+                <button onclick="showSymptoms(this)">Show Symptoms</button>
+            </div>
+            <div class="diseases-item" data-category="bacterial" data-symptoms="Fever, Rash, Joint pain">
+                Lyme Disease
+                <button onclick="showSymptoms(this)">Show Symptoms</button>
+            </div>
+            <div class="diseases-item" data-category="genetic" data-symptoms="Fatigue, Pain, Swelling in hands and feet">
+                Sickle Cell Anemia
+                <button onclick="showSymptoms(this)">Show Symptoms</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function searchDisease() {
+            const searchInput = document.getElementById('searchBar').value.toLowerCase();
+            const diseases = document.querySelectorAll('.diseases-item');
+
+            diseases.forEach(disease => {
+                const name = disease.textContent.toLowerCase();
+                const symptoms = disease.getAttribute('data-symptoms').toLowerCase();
+                if (name.includes(searchInput) || symptoms.includes(searchInput)) {
+                    disease.style.display = '';
+                } else {
+                    disease.style.display = 'none';
+                }
+            });
+        }
+
+        function filterDiseases() {
+            const checkboxes = document.querySelectorAll('.filter-container input[type="checkbox"]');
+            const diseases = document.querySelectorAll('.diseases-item');
+
+            const activeFilters = Array.from(checkboxes)
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.value);
+
+            diseases.forEach(disease => {
+                const category = disease.getAttribute('data-category');
+                if (activeFilters.length === 0 || activeFilters.includes(category)) {
+                    disease.style.display = '';
+                } else {
+                    disease.style.display = 'none';
+                }
+            });
+        }
+
+        function showSymptoms(button) {
+            const diseaseItem = button.parentElement;
+            const symptoms = diseaseItem.getAttribute('data-symptoms');
+        
+            let symptomsElement = diseaseItem.querySelector('.symptoms');
+            if (!symptomsElement) {
+                symptomsElement = document.createElement('div');
+                symptomsElement.className = 'symptoms';
+                symptomsElement.textContent = `Symptoms: ${symptoms}`;
+                diseaseItem.appendChild(symptomsElement);
+            } else {
+                symptomsElement.remove();
+            }
+        }
+        
+
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch("disease.json")
+                .then(response => response.json())
+                .then(data => {
+                    const diseaseList = document.getElementById("diseaseList");
+                    diseaseList.innerHTML = '<h2>List of Diseases</h2>';
+                    
+                    data.forEach(disease => {
+                        const diseaseItem = document.createElement("div");
+                        diseaseItem.className = "diseases-item";
+                        diseaseItem.setAttribute("data-category", disease.category);
+                        diseaseItem.setAttribute("data-symptoms", disease.symptoms);
+                        
+                        diseaseItem.innerHTML = `
+                            ${disease.name}
+                            <button onclick="showSymptoms(this)">Show Symptoms</button>
+                        `;
+                        diseaseList.appendChild(diseaseItem);
+                    });
+                })
+                .catch(error => console.error("Error fetching data:", error));
+        });
+        
+    </script>
+
+
+</body>
+</html>
